@@ -1,0 +1,27 @@
+# Create and set working directory
+WORKDIR /app
+
+# Copy project files
+COPY . /app/
+
+# Create virtual environment
+RUN pip install virtualenv
+RUN virtualenv myenv
+# Activate virtual environment
+#RUN . source myenv/bin/activate
+#RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+#RUN . source . .env
+ENV PATH="/app/myvenv/bin:$PATH"
+# Install dependencies
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# Expose port
+EXPOSE 8000
+
+# Define volumes
+VOLUME /app/data
+VOLUME /app/logs
+
+# Run the application
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
